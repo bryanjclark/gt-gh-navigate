@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub-Graphite Navigator",
+  "version": "1.0",
+  "description": "Navigate between GitHub and Graphite PRs with Command+O",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*",
+        "https://app.graphite.dev/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "48": "icon.png"
+  }
+}
