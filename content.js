@@ -6,6 +6,13 @@ document.addEventListener('keydown', function(event) {
 
     // Check if we're on GitHub
     if (currentUrl.includes('github.com')) {
+      // Check if we're on a pulls page
+      if (currentUrl.includes('/pulls')) {
+        event.preventDefault();
+        openFirstThreePRsInGraphite();
+        return;
+      }
+      
       // Parse GitHub PR URL: https://github.com/owner/repo/pull/number
       const githubMatch = currentUrl.match(/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)/);
       
@@ -40,3 +47,31 @@ document.addEventListener('keydown', function(event) {
     }
   }
 });
+
+function openFirstThreePRsInGraphite() {
+  // Extract owner and repo from current URL
+  const urlMatch = window.location.href.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if (!urlMatch) return;
+  
+  const owner = urlMatch[1];
+  const repo = urlMatch[2];
+  
+  // Find PR links on the page
+  const prLinks = document.querySelectorAll('a[href*="/pull/"]');
+  const uniquePRs = new Set();
+  
+  // Extract unique PR numbers from the links
+  prLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    const prMatch = href.match(/\/pull\/(\d+)/);
+    if (prMatch && uniquePRs.size < 3) {
+      uniquePRs.add(prMatch[1]);
+    }
+  });
+  
+  // Open first 3 PRs in Graphite
+  Array.from(uniquePRs).slice(0, 3).forEach(prNumber => {
+    const graphiteUrl = `https://app.graphite.dev/github/pr/${owner}/${repo}/${prNumber}`;
+    window.open(graphiteUrl, '_blank');
+  });
+}
