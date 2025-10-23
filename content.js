@@ -1,21 +1,3 @@
-document.addEventListener('keydown', function(event) {
-  // Check if Command+D is pressed on GitHub PR page
-  if (event.metaKey && event.key === 'd') {
-    const currentUrl = window.location.href;
-    
-    // Check if we're on a GitHub pull request page
-    if (currentUrl.match(/github\.com\/[^\/]+\/[^\/]+\/pull\/\d+/)) {
-      event.preventDefault();
-      
-      // Find and click the "View deployment" button
-      const deploymentButton = document.querySelector('a.btn.btn-sm.float-right[href*="preview"][href*="gentrace.ai"]');
-      if (deploymentButton) {
-        deploymentButton.click();
-      }
-      return;
-    }
-  }
-  
   // Check if Command+O (Mac) or Ctrl+O (Windows/Linux) is pressed
   if ((event.metaKey || event.ctrlKey) && event.key === 'o') {
     const currentUrl = window.location.href;
